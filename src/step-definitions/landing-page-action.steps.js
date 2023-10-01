@@ -2,25 +2,16 @@ const { Given, When, Then, After, Before } = require('@wdio/cucumber-framework')
 const compare = require('./utils/compare-text')
 
 
-const { LandingPage } = require ('../features/po/pages/');
+const { LandingPage } = require ('../features/po/pages');
 const landingPage = new LandingPage()
 
-Before({tags: '@tagName'}, async function() {
+// Before({tags: '@tagName'}, async function() {
 
-    console.log('print your info');
-    });
+//     console.log('print your info');
+//     });
 
 Given('I am on the landing page', async () => {
     return await landingPage.open()
-});
-
-Then('Page title should {string} to {string}', async(opt, text) => {
-    const title = await browser.getTitle();
-    return await compare(title, text, opt)
-})
-
-When('I maximize window', async () => {
-    return await browser.maximizeWindow();
 });
 
 When('I click on theme swicther', async() => {
@@ -59,7 +50,38 @@ Then('I check policies list {string} {string}', async(opt, point) => {
     return await compare(result, point, opt)
 })
 
+Then('I check Our Locations list {string} {string}', async(opt, point) => {
+    await browser.pause(2000)
+    const result = await landingPage.contentComponent.ourLocationsList()
+    return await compare(result, point, opt)
+})
 
+// When('I click on {string}', async(locationName) => {
+//     await landingPage.contentComponent.locationBtn(locationName).scrollIntoView({ block: 'center', inline: 'center' });
+//     return await landingPage.contentComponent.locationBtn(locationName).click()
+// })
+
+When('I scroll to {string} element View', async(locationName) => {
+    return await landingPage.contentComponent.locationBtn(locationName).scrollIntoView({ block: 'center', inline: 'center' });
+})
+
+When('I click on {string}', async(locationName) => {
+    await landingPage.contentComponent.locationBtn(locationName).click()
+    return await landingPage.contentComponent.locationBtn(locationName).scrollIntoView({ block: 'center', inline: 'center' });
+})
+
+Then('{string} becomes active', async(locationName) => {
+    const locationListString = await landingPage.contentComponent.ourLocationsList()
+    const locationList = locationListString.split(',')
+    for (let i = 0; i < locationList.length; i++) {
+        const attr = await landingPage.contentComponent.locationBtn(locationList[i]).getAttribute('class')      
+        if (locationList[i] === locationName ) {
+            await compare(attr, 'active', 'contain')
+        } else {
+            await compare(attr, 'active', 'not contain')
+        }
+    }
+})
 
 
 // When(/^I login with (\w+) and (.+)$/, async (username, password) => {

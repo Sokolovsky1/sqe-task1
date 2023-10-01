@@ -1,3 +1,4 @@
+@landingPageUI
 Feature: Landing Page UI
 
   Scenario Outline: Open landing page and maximize window
@@ -12,7 +13,7 @@ Feature: Landing Page UI
     When I click on theme swicther
     Then color theme should change to "light"
 
-Scenario Outline: Check the policies list
+  Scenario Outline: Check the policies list
     
     Then I check policies list "contain" "<policiePoint>"
     Examples:
@@ -24,6 +25,18 @@ Scenario Outline: Check the policies list
       | PRIVACY POLICY           |
       | WEB ACCESSIBILITY        |
 
+  Scenario Outline: Check that allow to switch location list by region
+    
+    Then I check Our Locations list "contain" "<location>"
+    When I scroll to "<location>" element View
+    When I click on "<location>"
+    Then "<location>" becomes active
+        Examples:
+      | location  |
+      | AMERICAS  |
+      | EMEA      |
+      | APAC      |
+  
   Scenario Outline: Check that allow to change language to UA
 
     When I click on language selector

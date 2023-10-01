@@ -7,7 +7,8 @@
     "@wdio/spec-reporter": "^8.16.12"
   },
   "scripts": {
-    "wdio": "wdio run ./src/configs/wdio.conf.js"
+    "wdio": "wdio run ./src/configs/wdio.conf.js",
+    "wdio-tags": "wdio run ./src/configs/wdio.conf.js --cucumberOpts.tags"
   },
   "dependencies": {
     "chromedriver": "^117.0.3",
