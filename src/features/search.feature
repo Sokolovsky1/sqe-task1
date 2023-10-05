@@ -1,7 +1,7 @@
 @search
 Feature: Search
 
-  Scenario Outline: Open landing page and maximize window
+  Background: Open landing page and maximize window
     Given I am on the landing page
     When I maximize window
 

@@ -17,6 +17,10 @@ class HeaderComponent extends BaseComponent {
         return this.rootEl.$('.location-selector__panel')
     }
 
+    get headerLogo() {
+        return this.rootEl.$('a.desktop-logo')
+    }
+
     languageNameBtn(name) {
         const selector = {
             EN_EN: '.location-selector__item a[href="https://www.epam.com"]',
