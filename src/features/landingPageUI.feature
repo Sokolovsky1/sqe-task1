@@ -11,19 +11,12 @@ Feature: Landing Page UI
   Scenario Outline: Check the ability to switch Light / Dark mode
   
     When I click on theme swicther
-    Then color theme should change to "light"
+    Then color theme should change to opposite
 
   Scenario Outline: Check the policies list
     
-    Then I check policies list "contain" "<policiePoint>"
-    Examples:
-      | policiePoint             |
-      | INVESTORS                |
-      | COOKIE POLICY            |
-      | OPEN SOURCE              |
-      | APPLICANT PRIVACY NOTICE |
-      | PRIVACY POLICY           |
-      | WEB ACCESSIBILITY        |
+    Then I check policies list contain next points:
+      | INVESTORS | COOKIE POLICY | OPEN SOURCE | APPLICANT PRIVACY NOTICE | PRIVACY POLICY | WEB ACCESSIBILITY |
 
   Scenario Outline: Check that allow to switch location list by region
     

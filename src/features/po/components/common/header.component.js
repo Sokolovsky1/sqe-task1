@@ -9,6 +9,10 @@ class HeaderComponent extends BaseComponent {
         return this.rootEl.$('.desktop-logo + .theme-switcher-ui .switch')
     }
 
+    get darkTheme() {
+        return $('body.dark-mode')
+    }
+
     get locationSelectorBtn() {
         return this.rootEl.$('.location-selector__button')
     }

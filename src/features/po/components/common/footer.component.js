@@ -10,7 +10,7 @@ class FooterComponent extends BaseComponent {
         const res = elementsList.map( (el) => {
             return el.getText()
         })
-        return res.join(',')
+        return res
     }
 }
 

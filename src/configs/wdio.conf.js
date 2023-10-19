@@ -61,6 +61,16 @@ exports.config = {
               'download.default_directory': downloadDir
             }
           }
+    },
+    {
+        browserName: 'firefox',
+        'moz:firefoxOptions': {
+            prefs: {
+              'directory_upgrade': true,
+              'prompt_for_download': false,
+              'download.default_directory': downloadDir
+            }
+          }
     }],
 
     //

@@ -1,27 +1,31 @@
-const { Given, When, Then, After, Before } = require('@wdio/cucumber-framework');
+const { Given, When, Then } = require('@wdio/cucumber-framework');
 const compare = require('./utils/compare-text')
 
 
 const { LandingPage } = require ('../features/po/pages');
 const landingPage = new LandingPage()
 
-// Before({tags: '@tagName'}, async function() {
-
-//     console.log('print your info');
-//     });
-
 Given('I am on the landing page', async () => {
     return await landingPage.open()
 });
 
 When('I click on theme swicther', async() => {
-    return await landingPage.headerComponent.themeSwitcher.click()
+    if (await landingPage.headerComponent.darkTheme.isExisting()) {
+        this.isBeforeClick = true
+    } else {
+        this.isBeforeClick = false
+    }
+    await landingPage.headerComponent.themeSwitcher.click()
+    await browser.pause(2000)
+    if (await landingPage.headerComponent.darkTheme.isExisting()) {
+        this.isAfterClick = true
+    } else {
+        this.isAfterClick = false
+    }
 })
 
-Then('color theme should change to {string}', async(text) => {
-    const attr = await $('body').getAttribute('class')
-    await browser.pause(5000)
-    return await compare(attr, text, 'contain')
+Then('color theme should change to opposite', async() => {
+    await expect(this.isBeforeClick).not.toEqual(this.isAfterClick);
 })
 
 When('I click on language selector', async() => {
@@ -44,10 +48,10 @@ Then('language should be changed to Ukrainian', async() => {
     return await compare(url, 'https://careers.epam.ua/', 'be equal')
 })
 
-Then('I check policies list {string} {string}', async(opt, point) => {
-    await browser.pause(2000)
-    const result = await landingPage.footerComponent.policiesList()
-    return await compare(result, point, opt)
+Then('I check policies list contain next points:', async(dataTable) => {
+    const received = await landingPage.footerComponent.policiesList().sort()
+    const expected = dataTable.raw()[0].sort()
+    return await expect(received).toStrictEqual(expected)
 })
 
 Then('I check Our Locations list {string} {string}', async(opt, point) => {
@@ -62,12 +66,12 @@ Then('I check Our Locations list {string} {string}', async(opt, point) => {
 // })
 
 When('I scroll to {string} element View', async(locationName) => {
-    return await landingPage.contentComponent.locationBtn(locationName).scrollIntoView({ block: 'center', inline: 'center' });
+    await landingPage.contentComponent.locationBtn(locationName).scrollIntoView({ block: 'center', inline: 'center' });
 })
 
 When('I click on {string}', async(locationName) => {
     await landingPage.contentComponent.locationBtn(locationName).click()
-    return await landingPage.contentComponent.locationBtn(locationName).scrollIntoView({ block: 'center', inline: 'center' });
+    await landingPage.contentComponent.locationBtn(locationName).scrollIntoView({ block: 'center', inline: 'center' });
 })
 
 Then('{string} becomes active', async(locationName) => {
@@ -82,14 +86,4 @@ Then('{string} becomes active', async(locationName) => {
         }
     }
 })
-
-
-// When(/^I login with (\w+) and (.+)$/, async (username, password) => {
-//     await pages.login.login(username, password)
-// });
-
-// Then(/^I should see a flash message saying (.*)$/, async (message) => {
-//     await expect(pages.secure.flashAlert).toBeExisting();
-//     await expect(pages.secure.flashAlert).toHaveTextContaining(message);
-// });
 
