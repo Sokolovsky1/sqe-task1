@@ -66,9 +66,12 @@ exports.config = {
         browserName: 'firefox',
         'moz:firefoxOptions': {
             prefs: {
-              'directory_upgrade': true,
-              'prompt_for_download': false,
-              'download.default_directory': downloadDir
+                "browser.download.dir": downloadDir,
+                'browser.download.folderList': 2,
+                "browser.download.useDownloadDir": true,
+                "browser.helperApps.alwaysAsk.force": false,
+                "browser.helperApps.neverAsk.saveToDisk": "application/pdf,image/jpeg,image/jpg,text/calendar,text/csv",
+                "pdfjs.disabled": true,
             }
           }
     }],
